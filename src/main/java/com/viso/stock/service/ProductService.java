@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.viso.stock.exceptions.NotFoundException;
 import com.viso.stock.model.ProductEntity;
 import com.viso.stock.repository.ProductRepository;
 
 @Service
 public class ProductService {
+    private final String source = "Product";
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -24,7 +26,11 @@ public class ProductService {
     }
 
     public ProductEntity findByBarcode(String barcode) {
-        return productRepository.findByBarcode(barcode);
+        final ProductEntity product = productRepository.findByBarcode(barcode);
+        if (product == null) {
+            throw new NotFoundException("Product not found with barcode " + barcode, source);
+        }
+        return product;
     }
 
     public ProductEntity updateProduct(Long id, ProductEntity product) {
@@ -37,7 +43,7 @@ public class ProductService {
             existingProduct.setSellPrice(product.getSellPrice() != 0 ? product.getSellPrice() : existingProduct.getSellPrice());
             existingProduct.setStockQuantity(product.getStockQuantity() != 0 ? product.getStockQuantity() : existingProduct.getStockQuantity());
             return productRepository.save(existingProduct);
-        }).orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+        }).orElseThrow(() -> new NotFoundException("Product not found with id " + id, source));
     }
 
     public void deleteProduct(Long id) {
