@@ -39,4 +39,8 @@ public class RoleEntity {
         this.name = name;
         this.permissions = permissions;
     }
+
+    public Set<PermissionEntity> getPermissions() {
+        return permissions;
+    }
 }

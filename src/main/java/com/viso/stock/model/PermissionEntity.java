@@ -1,15 +1,17 @@
 package com.viso.stock.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import java.util.UUID;
 
 @Entity
 @Table(name = "permissions", uniqueConstraints = {
@@ -22,13 +24,20 @@ public class PermissionEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false)
+    @Convert(converter = PermissionConverter.class)
     private Permission name;
 
-    @Column(name = "description")
-    private String description;
+    protected PermissionEntity() {}
 
-    public PermissionEntity(String name, String description) {
-        this.name = Permission.valueOf(name);
-        this.description = description;
+    public PermissionEntity(String name) {
+        this.name = Permission.fromAuthority(name);
+    }
+
+    public PermissionEntity(Permission namePermission) {
+        this.name = namePermission;
+    }
+
+    public Permission getName() {
+        return name;
     }
 }

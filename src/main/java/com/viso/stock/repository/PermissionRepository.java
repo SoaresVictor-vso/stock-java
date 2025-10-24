@@ -5,8 +5,9 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.viso.stock.model.Permission;
 import com.viso.stock.model.PermissionEntity;
 
 public interface PermissionRepository extends JpaRepository<PermissionEntity, UUID> {
-    Optional<PermissionEntity> findByName(String name);
+    Optional<PermissionEntity> findByName(Permission name);
 }

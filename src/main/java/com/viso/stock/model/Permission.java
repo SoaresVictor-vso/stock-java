@@ -16,6 +16,15 @@ public enum Permission {
         this.authority = authority;
     }
 
+    public static Permission fromAuthority(String authority) {
+        for (Permission p : Permission.values()) {
+            if (p.authority.equals(authority)) {
+                return p;
+            }
+        }
+        throw new IllegalArgumentException("Unknown permission: " + authority);
+    }
+
     public String getAuthority() {
         return authority;
     }
