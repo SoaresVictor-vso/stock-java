@@ -21,10 +21,9 @@ public class DbSeedService {
     @Transactional
     public void seedFromEnums() {
         for (Permission p : Permission.values()) {
-            String pName = p.getAuthority();
-            Optional<PermissionEntity> saved = permissionRepository.findByName(p);
-            if(saved == null || saved.isEmpty()) {
-                PermissionEntity permission = new PermissionEntity(pName);
+            Optional<PermissionEntity> existing = permissionRepository.findByName(p);
+            if (existing.isEmpty()) {
+                PermissionEntity permission = new PermissionEntity(p);
                 permissionRepository.save(permission);
             }
         }

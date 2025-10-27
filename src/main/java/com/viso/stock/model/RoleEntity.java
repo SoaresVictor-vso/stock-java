@@ -1,5 +1,6 @@
 package com.viso.stock.model;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,13 +28,15 @@ public class RoleEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=jakarta.persistence.CascadeType.MERGE)
     @JoinTable(
         name = "role_permissions",
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<PermissionEntity> permissions;
+    private Set<PermissionEntity> permissions = new HashSet<>();
+
+    public RoleEntity() {}
 
     public RoleEntity(String name, Set<PermissionEntity> permissions) {
         this.name = name;
@@ -42,5 +45,30 @@ public class RoleEntity {
 
     public Set<PermissionEntity> getPermissions() {
         return permissions;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // convenience helpers
+    public void addPermission(PermissionEntity p) {
+        this.permissions.add(p);
+    }
+
+    public void removePermission(PermissionEntity p) {
+        this.permissions.remove(p);
+    }
+
+    public void setPermissions(Set<PermissionEntity> permissions) {
+        this.permissions = permissions;
     }
 }
