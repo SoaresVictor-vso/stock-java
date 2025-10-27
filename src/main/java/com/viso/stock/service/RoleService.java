@@ -1,5 +1,6 @@
 package com.viso.stock.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -58,5 +59,9 @@ public class RoleService {
 
         role = roleRepo.save(role); // will insert role and role_permissions rows only
         return role;
+    }
+    
+    public Set<RoleEntity> findByNames(String[] names) {
+        return new HashSet<>(roleRepo.findByNameIn(names));
     }
 }

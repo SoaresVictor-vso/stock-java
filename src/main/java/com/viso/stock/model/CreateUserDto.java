@@ -4,6 +4,7 @@ public class CreateUserDto {
     private String email;
     private String password;
     private String fullName;
+    private String[] roleName;
 
     public CreateUserDto() {
     }
@@ -12,6 +13,14 @@ public class CreateUserDto {
         this.email = email;
         this.password = password;
         this.fullName = fullName;
+        this.roleName = new String[]{"Default"};
+    }
+
+    public CreateUserDto(String email, String password, String fullName, String[] roleName) {
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.roleName = roleName;
     }
 
     public String getEmail() {
@@ -36,5 +45,9 @@ public class CreateUserDto {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String[] getRoleName() {
+        return roleName;
     }
 }

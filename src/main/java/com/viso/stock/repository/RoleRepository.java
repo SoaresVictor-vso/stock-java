@@ -10,4 +10,6 @@ import com.viso.stock.model.RoleEntity;
 
 public interface RoleRepository extends JpaRepository<RoleEntity, UUID> {
     Optional<RoleEntity> findByName(String name);
+
+    java.util.List<RoleEntity> findByNameIn(String[] names);
 }
