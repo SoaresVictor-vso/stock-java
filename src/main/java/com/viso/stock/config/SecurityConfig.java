@@ -80,7 +80,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
+                .and()
+                .addFiltersBefore()
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

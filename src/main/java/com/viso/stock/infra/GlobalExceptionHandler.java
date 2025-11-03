@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.viso.stock.exceptions.BadCredentialsException;
 import com.viso.stock.exceptions.NotFoundException;
 
 @ControllerAdvice
@@ -35,6 +36,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
             new ErrorResponseEntity("Malformed object", null, "BAD_REQUEST"),
             org.springframework.http.HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseEntity> handleBadCredentialsException(BadCredentialsException ex) {
+        System.err.println("Bad credentials error occurred: " + ex.getMessage());
+        return new ResponseEntity<>(
+            new ErrorResponseEntity("Invalid Credentials", "auth", "BAD_CREDENTIALS"),
+            org.springframework.http.HttpStatus.UNAUTHORIZED
         );
     }
 

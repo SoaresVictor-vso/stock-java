@@ -74,4 +74,8 @@ public class UserEntity {
     public UUID getId() {
         return id;
     }
+
+    public String getName() {
+        return fullName;
+    }
 }
