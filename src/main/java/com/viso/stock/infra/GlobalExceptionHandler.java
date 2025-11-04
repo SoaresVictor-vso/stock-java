@@ -3,6 +3,7 @@ package com.viso.stock.infra;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -45,6 +46,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
             new ErrorResponseEntity("Invalid Credentials", "auth", "BAD_CREDENTIALS"),
             org.springframework.http.HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponseEntity> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+        System.err.println("Authorization denied error occurred: " + ex.getMessage());
+        return new ResponseEntity<>(
+            new ErrorResponseEntity("Access Denied", null, "ACCESS_DENIED"),
+            org.springframework.http.HttpStatus.FORBIDDEN
         );
     }
 

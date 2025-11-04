@@ -59,7 +59,9 @@ public class JwtService {
         }
         UUID userId = UUID.fromString(claims.getSubject());
         String name = claims.get("name", String.class);
-        List<String> roleNames = claims.get("roles", List.class);
+        @SuppressWarnings("unchecked")
+        List<String> roleNames = (List<String>) claims.get("roles");
+        System.out.println(roleNames.size() + " " + roleNames.get(0));
         Set<RoleEntity> roles = roleService.findByNames(roleNames.toArray(new String[0]));
         return new TokenUserEntity(userId, name, roles);
     }
